@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}Track Complaint | Echo Desk{% endblock %}
+{% block content %}
+<div class="form-page-heading"><a class="back-link" href="{{ url_for('dashboard') }}">← Back to dashboard</a><span class="eyebrow">COMPLAINT TRACKING</span><h1>{{ complaint.title }}</h1><p>Track updates and review the history of your complaint.</p></div>
+<section class="panel tracking-panel">
+  <div class="tracking-top"><div><span class="stat-label">COMPLAINT REFERENCE</span><h2>{{ complaint.complaint_id }}</h2></div><span class="status status-{{ complaint.status|lower|replace(' ', '-') }}" id="live-status">{{ complaint.status }}</span></div>
+  {% set progress_values = {'Submitted': 20, 'Under Review': 40, 'In Progress': 60, 'Resolved': 80, 'Closed': 100} %}
+  <div class="status-progress" id="status-progress" data-status="{{ complaint.status }}">
+    <div class="progress-track"><div class="progress-fill" id="progress-fill" style="width: {{ progress_values.get(complaint.status, 20) }}%"></div></div>
+    <div class="progress-steps">
+      <span class="{{ 'active' if complaint.status in ['Submitted','Under Review','In Progress','Resolved','Closed'] else '' }}">Submitted</span>
+      <span class="{{ 'active' if complaint.status in ['Under Review','In Progress','Resolved','Closed'] else '' }}">Under Review</span>
+      <span class="{{ 'active' if complaint.status in ['In Progress','Resolved','Closed'] else '' }}">In Progress</span>
+      <span class="{{ 'active' if complaint.status in ['Resolved','Closed'] else '' }}">Resolved</span>
+      <span class="{{ 'active' if complaint.status == 'Closed' else '' }}">Closed</span>
+    </div>
+  </div>
+  <div class="complaint-meta"><div><span>Category</span><strong>{{ complaint.category }}</strong></div><div><span>Department</span><strong>{{ complaint.department }}</strong></div><div><span>Submitted</span><strong>{{ complaint.created_at.strftime('%d %b %Y') }}</strong></div></div>
+  <div class="description-box"><span class="stat-label">DESCRIPTION</span><p>{{ complaint.description }}</p></div>
+  <div class="live-update-box" id="tracking-box" data-complaint-id="{{ complaint_id }}"><span class="live-dot"></span><div><strong>Live tracking</strong><p id="live-remarks">{{ complaint.admin_remarks or "You’ll see the latest admin update here." }}</p><small id="connection-status">Connecting to live updates…</small></div></div>
+</section>
+<section class="panel timeline-panel"><div class="panel-heading"><div><span class="eyebrow">PROGRESS LOG</span><h2>Complaint timeline</h2></div></div>
+  <div class="timeline" id="complaint-timeline">
+  {% for item in complaint.history|reverse %}
+    <article class="timeline-item"><span class="timeline-dot"></span><div class="timeline-content"><div class="timeline-title-row"><h3>{{ item.status }}</h3><small>{{ item.updated_at.strftime('%d %b %Y, %I:%M %p UTC') }}</small></div><p>{{ item.remarks }}</p></div></article>
+  {% endfor %}
+  </div>
+</section>
+{% endblock %}

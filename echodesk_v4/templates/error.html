@@ -1,0 +1,5 @@
+{% extends "base.html" %}
+{% block title %}{{ code }} | Echo Desk{% endblock %}
+{% block content %}
+<section class="empty-state error-page"><span class="eyebrow">ECHO DESK</span><h1>{{ code }}</h1><h2>Something went wrong.</h2><p>{{ message }}</p><a class="btn" href="{{ url_for('index') }}">Return home</a></section>
+{% endblock %}

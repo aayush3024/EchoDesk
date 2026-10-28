@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}{{ 'Admin Login' if login_role == 'admin' else ('Student Login' if login_role == 'student' else 'Login') }} | Echo Desk{% endblock %}
+{% block content %}
+<div class="login-page">
+  <section class="login-story">
+    <a class="login-brand" href="{{ url_for('index') }}">
+      <span class="brand-icon" aria-hidden="true"><svg viewBox="0 0 48 48"><path d="M7 8.5A5.5 5.5 0 0 1 12.5 3h25A5.5 5.5 0 0 1 43 8.5v23a5.5 5.5 0 0 1-5.5 5.5H20l-11 8V8.5Z" fill="currentColor"/><path d="M15 14h20M15 21h14M15 28h9" stroke="white" stroke-width="2.8" stroke-linecap="round"/></svg></span>
+      <span><strong>Echo Desk</strong><small>Student Complaint Portal</small></span>
+    </a>
+    <div class="story-copy">
+      <h1>Your Voice<br><span>Matters</span></h1>
+      <p class="story-intro">Submit your concerns, track their progress and help us build a better campus together.</p>
+      <div class="story-feature"><span class="feature-icon blue">↗</span><div><strong>Raise Complaints</strong><p>Submit your issues easily to the right department</p></div></div>
+      <div class="story-feature"><span class="feature-icon green">⌕</span><div><strong>Track Status</strong><p>Get real-time updates on your complaints</p></div></div>
+      <div class="story-feature"><span class="feature-icon orange">♧</span><div><strong>Better Campus</strong><p>A more responsive and student-friendly environment</p></div></div>
+    </div>
+    <div class="campus-caption">A better campus starts with listening.</div>
+  </section>
+
+  <section class="login-panel-wrap">
+    <div class="login-panel">
+      <div class="login-heading"><h2>Welcome Back</h2><p>Login to your account to continue</p></div>
+      <div class="role-switch" aria-label="Choose account type">
+        <a class="role-option {{ 'active' if login_role != 'admin' else '' }}" href="{{ url_for('student_login') }}"><span>♟</span> Student</a>
+        <a class="role-option {{ 'active' if login_role == 'admin' else '' }}" href="{{ url_for('admin_login') }}"><span>♢</span> Admin</a>
+      </div>
+      <form method="POST" class="login-form">
+        <label for="email">{{ 'Admin Email' if login_role == 'admin' else 'Student Email' }}</label>
+        <div class="input-wrap"><span aria-hidden="true">♙</span><input id="email" type="email" name="email" placeholder="{{ 'Enter your admin email' if login_role == 'admin' else 'Enter your student email' }}" autocomplete="email" required></div>
+        <label for="password">Password</label>
+        <div class="input-wrap"><span aria-hidden="true">♙</span><input id="password" type="password" name="password" placeholder="Enter your password" autocomplete="current-password" required><button class="password-toggle" type="button" aria-label="Show password" onclick="const p=document.getElementById('password');p.type=p.type==='password'?'text':'password';this.textContent=p.type==='password'?'◉':'◎';">◉</button></div>
+        <div class="login-options"><label class="remember"><input type="checkbox" name="remember"> <span>Remember me</span></label><a href="mailto:support@echodesk.local?subject=Password%20reset%20request">Forgot Password?</a></div>
+        <button class="login-submit" type="submit">Login <span>→</span></button>
+      </form>
+      {% if login_role != 'admin' %}
+      <div class="or-divider"><span></span>OR<span></span></div>
+      <a class="register-button" href="{{ url_for('register') }}">New Student? <strong>Register Here</strong></a>
+      {% else %}
+      <p class="admin-note">Administrator access is provisioned by the portal owner.</p>
+      {% endif %}
+    </div>
+  </section>
+</div>
+{% endblock %}

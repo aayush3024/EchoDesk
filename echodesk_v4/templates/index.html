@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}Echo Desk | College Complaint Portal{% endblock %}
+{% block content %}
+<section class="hero">
+  <div class="hero-copy">
+    <span class="eyebrow">COLLEGE GRIEVANCE MANAGEMENT</span>
+    <h1>Your voice.<br><span>Our responsibility.</span></h1>
+    <p>One simple place to raise campus concerns, follow every update, and see your complaint through to resolution.</p>
+    <div class="hero-actions">
+      {% if current_user.is_authenticated %}
+        <a class="btn" href="{{ url_for('dashboard') }}">Open dashboard <span>→</span></a>
+      {% else %}
+        <a class="btn" href="{{ url_for('register') }}">Get started <span>→</span></a>
+        <a class="btn btn-light" href="{{ url_for('student_login') }}">Student login</a>
+        <a class="btn btn-light" href="{{ url_for('admin_login') }}">Admin login</a>
+      {% endif %}
+    </div>
+    <div class="hero-note"><span class="live-dot"></span> Transparent updates from submission to resolution</div>
+  </div>
+  <div class="hero-art" aria-hidden="true">
+    <div class="art-orbit orbit-one"></div><div class="art-orbit orbit-two"></div>
+    <div class="art-card">
+      <div class="art-card-top"><span class="art-icon">ED</span><span class="mini-pill">Live status</span></div>
+      <p class="art-label">COMPLAINT #ED-28A91F</p>
+      <h3>Library Wi-Fi issue</h3>
+      <div class="progress-line"><span></span></div>
+      <div class="progress-labels"><span>Submitted</span><strong>In progress</strong></div>
+      <div class="art-update"><span class="check-icon">✓</span><div><strong>Update received</strong><small>IT Department is investigating</small></div></div>
+    </div>
+    <div class="floating-tag">✓ &nbsp; Tracked and recorded</div>
+  </div>
+</section>
+<section class="section-heading"><span class="eyebrow">HOW IT WORKS</span><h2>A better way to be heard.</h2><p>Clear steps. Accountable updates. Better campus experiences.</p></section>
+<section class="features">
+  <article class="feature-card"><div class="feature-number">01</div><h3>Raise a concern</h3><p>Submit details and choose the category and department that best match your issue.</p></article>
+  <article class="feature-card"><div class="feature-number">02</div><h3>Follow progress</h3><p>Use your complaint record to see its current status and the history of updates.</p></article>
+  <article class="feature-card"><div class="feature-number">03</div><h3>Get resolution</h3><p>College administrators update progress and add remarks as the issue is handled.</p></article>
+</section>
+{% endblock %}

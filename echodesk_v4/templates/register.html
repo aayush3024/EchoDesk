@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Student Registration | Echo Desk{% endblock %}
+{% block content %}
+<div class="auth-layout">
+  <section class="auth-aside"><span class="eyebrow">JOIN ECHO DESK</span><h1>Make your<br>voice count.</h1><p>Create a student account to submit campus complaints and track their progress in one place.</p><div class="aside-mark">ED<span>.</span></div></section>
+  <section class="form-card">
+    <span class="eyebrow">STUDENT ACCOUNT</span><h2>Create your account</h2><p class="form-intro">A few details and you're ready to get started.</p>
+    <form method="POST">
+      <label for="name">Full name</label><input id="name" type="text" name="name" maxlength="100" autocomplete="name" required>
+      <label for="email">College email</label><input id="email" type="email" name="email" maxlength="254" autocomplete="email" required>
+      <label for="password">Password <small>(8–128 characters)</small></label><input id="password" type="password" name="password" minlength="8" maxlength="128" autocomplete="new-password" required>
+      <label for="confirm_password">Confirm password</label><input id="confirm_password" type="password" name="confirm_password" minlength="8" maxlength="128" autocomplete="new-password" required>
+      <button class="btn full" type="submit">Create account <span>→</span></button>
+    </form>
+    <p class="auth-bottom">Already registered? <a href="{{ url_for('login') }}">Sign in</a></p>
+  </section>
+</div>
+{% endblock %}

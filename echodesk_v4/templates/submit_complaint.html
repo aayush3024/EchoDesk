@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}New Complaint | Echo Desk{% endblock %}
+{% block content %}
+<div class="form-page-heading"><a class="back-link" href="{{ url_for('dashboard') }}">← Back to dashboard</a><span class="eyebrow">STUDENT PORTAL / NEW REQUEST</span><h1>Raise a complaint</h1><p>Share the details so the right college department can review your concern.</p></div>
+<div class="form-card complaint-form-card">
+  <form method="POST">
+    <label for="title">Complaint title</label><input id="title" type="text" name="title" maxlength="150" placeholder="e.g. Wi-Fi not working in the library" required>
+    <div class="form-row">
+      <div><label for="category">Category</label><select id="category" name="category" required><option value="">Choose a category</option>{% for category in categories %}<option value="{{ category }}">{{ category }}</option>{% endfor %}</select></div>
+      <div><label for="department">Responsible department</label><select id="department" name="department" required><option value="">Choose a department</option>{% for department in departments %}<option value="{{ department }}">{{ department }}</option>{% endfor %}</select></div>
+    </div>
+    <label for="description">Describe the issue</label><textarea id="description" name="description" rows="7" maxlength="5000" placeholder="What happened, where did it happen, and how is it affecting you?" required></textarea>
+    <p class="helper-text">Please avoid including passwords or other sensitive personal information.</p>
+    <div class="form-actions"><a class="btn btn-light" href="{{ url_for('dashboard') }}">Cancel</a><button class="btn" type="submit">Submit complaint <span>→</span></button></div>
+  </form>
+</div>
+{% endblock %}

@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}Student Dashboard | Echo Desk{% endblock %}
+{% block content %}
+<section class="page-heading">
+  <div><span class="eyebrow">STUDENT PORTAL</span><h1>Good to see you, {{ current_user.name }}.</h1><p>Here’s the latest on the concerns you’ve raised.</p></div>
+  <a class="btn" href="{{ url_for('submit_complaint') }}">＋ New complaint</a>
+</section>
+<div class="stats-grid">
+  <article class="stat-card"><span class="stat-label">TOTAL COMPLAINTS</span><strong>{{ complaints|length }}</strong><span class="stat-foot">Your submitted records</span></article>
+  <article class="stat-card"><span class="stat-label">SUBMITTED</span><strong>{{ complaints|selectattr('status', 'equalto', 'Submitted')|list|length }}</strong><span class="stat-foot">Awaiting review</span></article>
+  <article class="stat-card"><span class="stat-label">IN PROGRESS</span><strong>{{ complaints|selectattr('status', 'equalto', 'In Progress')|list|length }}</strong><span class="stat-foot">Being worked on</span></article>
+  <article class="stat-card"><span class="stat-label">RESOLVED</span><strong>{{ complaints|selectattr('status', 'equalto', 'Resolved')|list|length }}</strong><span class="stat-foot">Issues marked resolved</span></article>
+</div>
+<section class="panel">
+  <div class="panel-heading"><div><span class="eyebrow">YOUR RECORDS</span><h2>My complaints</h2></div><span class="count-pill">{{ complaints|length }} total</span></div>
+  {% if complaints %}
+  <div class="table-wrapper"><table><thead><tr><th>Complaint</th><th>Category</th><th>Department</th><th>Status</th><th></th></tr></thead><tbody>
+  {% for c in complaints %}<tr>
+    <td><strong>{{ c.title }}</strong><small class="table-sub">{{ c.complaint_id }}</small></td><td>{{ c.category }}</td><td>{{ c.department }}</td>
+    <td><span class="status status-{{ c.status|lower|replace(' ', '-') }}">{{ c.status }}</span></td>
+    <td><a class="table-link" href="{{ url_for('track_complaint', complaint_id=c._id|string) }}">Track →</a></td>
+  </tr>{% endfor %}
+  </tbody></table></div>
+  {% else %}<div class="empty-state"><div class="empty-icon">＋</div><h3>No complaints yet</h3><p>When you raise a concern, you’ll be able to track it here.</p><a class="btn" href="{{ url_for('submit_complaint') }}">Submit your first complaint</a></div>{% endif %}
+</section>
+{% endblock %}

@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}Admin Dashboard | Echo Desk{% endblock %}
+{% block content %}
+<section class="page-heading"><div><span class="eyebrow">ADMINISTRATION · LIVE CASE MANAGEMENT</span><h1>Complaint overview</h1><p>Review the full student complaint, update its status, and keep students informed.</p></div></section>
+<div class="stats-grid">
+  <article class="stat-card"><span class="stat-label">ALL COMPLAINTS</span><strong>{{ stats.total }}</strong><span class="stat-foot">Across all departments</span></article>
+  <article class="stat-card"><span class="stat-label">SUBMITTED</span><strong>{{ stats.submitted }}</strong><span class="stat-foot">Waiting for review</span></article>
+  <article class="stat-card"><span class="stat-label">IN PROGRESS</span><strong>{{ stats.in_progress }}</strong><span class="stat-foot">Currently being handled</span></article>
+  <article class="stat-card"><span class="stat-label">RESOLVED</span><strong>{{ stats.resolved }}</strong><span class="stat-foot">Marked as resolved</span></article>
+</div>
+<section class="panel">
+  <div class="panel-heading"><div><span class="eyebrow">CASE MANAGEMENT</span><h2>All complaints</h2></div><span class="count-pill">{{ complaints|length }} records</span></div>
+  <input type="search" id="complaint-search" class="search-box" placeholder="Search by ID, student, title, description, department or status…">
+  <div class="table-wrapper"><table id="complaints-table"><thead><tr><th>Complaint / Student</th><th>Description</th><th>Department</th><th>Status</th><th>Update case</th></tr></thead><tbody>
+  {% for c in complaints %}<tr>
+    <td><strong>{{ c.title }}</strong><small class="table-sub">{{ c.complaint_id }} · {{ c.student_name }}</small></td>
+    <td class="complaint-description-cell">
+      {% if c.description %}
+        <details class="description-details">
+          <summary>Read full complaint</summary>
+          <p>{{ c.description }}</p>
+        </details>
+      {% else %}
+        <span class="table-sub">No description provided</span>
+      {% endif %}
+    </td>
+    <td>{{ c.department }}<small class="table-sub">{{ c.category }}</small></td>
+    <td><span class="status status-{{ c.status|lower|replace(' ', '-') }}">{{ c.status }}</span></td>
+    <td><form class="admin-update-form" method="POST" action="{{ url_for('update_complaint', complaint_id=c._id|string) }}">
+      <select name="status" aria-label="Complaint status">{% for status in statuses %}<option value="{{ status }}" {% if status == c.status %}selected{% endif %}>{{ status }}</option>{% endfor %}</select>
+      <textarea name="remarks" maxlength="1000" rows="2" placeholder="Add an update or reply for the student">{{ c.admin_remarks }}</textarea>
+      <label class="email-notify-option"><input type="checkbox" name="send_email" value="yes" checked> Email student about this update</label>
+      <button class="btn btn-small" type="submit">Save update &amp; notify</button>
+    </form></td>
+  </tr>{% else %}<tr><td colspan="5" class="no-results">No complaints have been submitted yet.</td></tr>{% endfor %}
+  </tbody></table></div>
+</section>
+{% endblock %}
